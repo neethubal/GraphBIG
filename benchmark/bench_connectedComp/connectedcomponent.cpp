@@ -8,6 +8,9 @@
 #include "openG.h"
 #include "omp.h"
 #include <queue>
+#ifdef ENABLE_ZSIM_HOOKS
+#include "zsim_hooks.h"
+#endif
 
 #ifdef SIM
 #include "SIM.h"
@@ -299,12 +302,18 @@ int main(int argc, char * argv[])
     {
         global_label=0;
         t1 = timer::get_usec();
+#ifdef ENABLE_ZSIM_HOOKS
+        zsim_roi_begin();
+#endif
 
         if (threadnum == 1)
             component_num = connected_component(graph, perf, i);
         else
             component_num = parallel_cc(graph, threadnum, perf_multi, i);
 
+#ifdef ENABLE_ZSIM_HOOKS
+        zsim_roi_end();
+#endif
         t2 = timer::get_usec();
         elapse_time += t2-t1;
         if ((i+1)<run_num) reset_graph(graph);

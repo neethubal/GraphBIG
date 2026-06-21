@@ -8,6 +8,9 @@
 #include "openG.h"
 #include <queue>
 #include "omp.h"
+#ifdef ENABLE_ZSIM_HOOKS
+#include "zsim_hooks.h"
+#endif
 
 #ifdef HMC
 #include "HMC.h"
@@ -248,8 +251,14 @@ int main(int argc, char * argv[])
         init_graphcoloring(graph,threadnum,global_input_tasks);
 
         t1 = timer::get_usec();
+#ifdef ENABLE_ZSIM_HOOKS
+        zsim_roi_begin();
+#endif
 
         parallel_graphcoloring(graph,threadnum,global_input_tasks,perf_multi,i);
+#ifdef ENABLE_ZSIM_HOOKS
+        zsim_roi_end();
+#endif
         t2 = timer::get_usec();
         elapse_time += t2-t1;
         if ((i+1)<run_num) reset_graph(graph);

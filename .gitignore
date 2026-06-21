@@ -68,3 +68,10 @@ csr_bench/tool_genCSR/genCSR
 tools/libpfm-4.5.0
 tools/libpfm-4.6.0
 
+# large datasets: extracted dirs + archives (keep the small tracked ones)
+dataset/*.tar.gz
+dataset/CA_RoadNet/
+dataset/Knowledge_Repo/
+dataset/LDBC/
+dataset/Watson_Gene/
+

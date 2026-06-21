@@ -25,8 +25,8 @@ reset_generated_dir:
 
 run: ${TARGET} reset_generated_dir
 	@if [ -n "${TARGET}" ]; then \
-          echo "Running ${TARGET}, output in ${OUTPUT_LOG}"; \
-          ./${TARGET} ${RUN_ARGS} ${PERF_ARGS} > ${OUTPUT_LOG} 2>&1; \
+          echo "Running ${TARGET} ${RUN_ARGS} ${PERF_ARGS}, output in ${OUTPUT_LOG}"; \
+		  ./${TARGET} ${RUN_ARGS} ${PERF_ARGS} > ${OUTPUT_LOG} 2>&1; \
 	fi
 
 verify: 
@@ -35,7 +35,9 @@ verify:
 	@echo "ReCompile with options: OUTPUT=1 VERIFY=1";
 	@-make OUTPUT=1 VERIFY=1 all;
 	@echo "Running...";
+	@echo "./${TARGET} ${RUN_ARGS}  > ${OUTPUT_LOG} 2>&1;"
 	@./${TARGET} ${RUN_ARGS}  > ${OUTPUT_LOG} 2>&1;
+	@echo "${ROOT}/scripts/compare.sh ${OUTPUT_LOG} ${EXPECTED_LOG} ${DIFF_LOG}"
 	@${ROOT}/scripts/compare.sh ${OUTPUT_LOG} ${EXPECTED_LOG} ${DIFF_LOG}
 
 clean:

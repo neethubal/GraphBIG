@@ -8,6 +8,9 @@
 #include "perf.h"
 #include "openG.h"
 #include "omp.h"
+#ifdef ENABLE_ZSIM_HOOKS
+#include "zsim_hooks.h"
+#endif
 #ifdef SIM
 #include "SIM.h"
 #endif
@@ -177,9 +180,15 @@ int main(int argc, char * argv[])
         t1 = timer::get_usec();
         perf.open(i);
         perf.start(i);
+#ifdef ENABLE_ZSIM_HOOKS
+        zsim_roi_begin();
+#endif
 
         graph_update(g, IDs);
 
+#ifdef ENABLE_ZSIM_HOOKS
+        zsim_roi_end();
+#endif
         perf.stop(i);
         t2 = timer::get_usec();
         if (i==(run_num-1))
